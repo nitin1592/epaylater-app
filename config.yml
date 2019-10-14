@@ -1,0 +1,11 @@
+hostname: localhost
+port: 8090
+database:
+
+  driverClass: org.postgresql.Driver
+
+  user: epaylater
+
+  password: epaylater
+
+  url: jdbc:postgresql://localhost:5432/epaylater
