@@ -37,6 +37,10 @@ public class SpendService implements ISpendService {
       throw new PhoneNumberNotExistException();
     }
     
+    if(amount > 100000.00) {
+    	throw new SingleTransactionLimitException();
+    }
+    
     Double totalLimit = creditLimitDAO.getCreditLimitByPhoneNumberIfNotLocked(phoneNumber,
         new Timestamp(Instant.now().toEpochMilli()));
 
@@ -44,10 +48,6 @@ public class SpendService implements ISpendService {
       throw new ConcurrentTransactionException();
     }
     
-    if(amount > 100000.00) {
-    	throw new SingleTransactionLimitException();
-    }
-
     Double totalSpent = creditTransactionsDAO.getTotalSpendAmount(phoneNumber);
 
     if(totalSpent  == null) {

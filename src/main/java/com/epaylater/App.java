@@ -6,6 +6,7 @@ import com.epaylater.database.CreditTransactionsDAO;
 import com.epaylater.exceptionmapper.ConcurrentTransactionExceptionMapper;
 import com.epaylater.exceptionmapper.CreditLimitCrossedExceptionMapper;
 import com.epaylater.exceptionmapper.PhoneNumberNotExistExceptionMapper;
+import com.epaylater.exceptionmapper.SingleTransactionLimitExceptionMapper;
 import com.epaylater.resources.CreateAccountResource;
 import com.epaylater.resources.SpendResource;
 import com.epaylater.service.ISpendService;
@@ -48,7 +49,8 @@ public class App extends Application<AppConfiguration> {
     environment.jersey().register(new ConcurrentTransactionExceptionMapper());
     environment.jersey().register(new CreditLimitCrossedExceptionMapper());
     environment.jersey().register(new PhoneNumberNotExistExceptionMapper());
-
+    environment.jersey().register(new SingleTransactionLimitExceptionMapper());
+    
     environment.jersey().register(new CreateAccountResource(creditLimitTable));
   }
 }
