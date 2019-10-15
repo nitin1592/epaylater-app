@@ -3,6 +3,7 @@ package com.epaylater.resources;
 import com.epaylater.exceptions.ConcurrentTransactionException;
 import com.epaylater.exceptions.CreditLimitCrossedException;
 import com.epaylater.exceptions.PhoneNumberNotExistException;
+import com.epaylater.exceptions.SingleTransactionLimitException;
 import com.epaylater.requests.SpendRequest;
 import com.epaylater.service.ISpendService;
 
@@ -29,7 +30,7 @@ public class SpendResource {
   public String getPerson(SpendRequest spendRequest,
       @HeaderParam("Authorization") String authorizationValue)
       throws ConcurrentTransactionException, PhoneNumberNotExistException,
-      CreditLimitCrossedException {
+      CreditLimitCrossedException, SingleTransactionLimitException {
 
 
     spendService.creditAmount(spendRequest.getPhoneNumber(), spendRequest.getAmount(),

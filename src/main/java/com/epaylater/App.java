@@ -34,11 +34,11 @@ public class App extends Application<AppConfiguration> {
 
     CreditTransactionsDAO creditTransactionTable = jdbi.onDemand(CreditTransactionsDAO.class);
 
-    creditTransactionTable.createTable();
-    creditTransactionTable.createIndex();
+    //creditTransactionTable.createTable();
+    //creditTransactionTable.createIndex();
 
     CreditLimitDAO creditLimitTable = jdbi.onDemand(CreditLimitDAO.class);
-    creditLimitTable.createCreditLimitTable();
+    //creditLimitTable.createCreditLimitTable();
 
     ISpendService spendService = new SpendService(creditTransactionTable, creditLimitTable);
     SpendResource spendResource =

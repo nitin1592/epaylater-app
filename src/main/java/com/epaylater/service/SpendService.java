@@ -5,6 +5,7 @@ import com.epaylater.database.CreditTransactionsDAO;
 import com.epaylater.exceptions.ConcurrentTransactionException;
 import com.epaylater.exceptions.CreditLimitCrossedException;
 import com.epaylater.exceptions.PhoneNumberNotExistException;
+import com.epaylater.exceptions.SingleTransactionLimitException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -28,25 +29,32 @@ public class SpendService implements ISpendService {
   @Override
   public void creditAmount(String phoneNumber, Double amount, String description)
       throws ConcurrentTransactionException, CreditLimitCrossedException,
-      PhoneNumberNotExistException {
+      PhoneNumberNotExistException, SingleTransactionLimitException {
 
     boolean exists = creditLimitDAO.checkIfAccountExists(phoneNumber);
 
     if (!exists) {
       throw new PhoneNumberNotExistException();
     }
-
+    
     Double totalLimit = creditLimitDAO.getCreditLimitByPhoneNumberIfNotLocked(phoneNumber,
         new Timestamp(Instant.now().toEpochMilli()));
 
     if (totalLimit == null) {
       throw new ConcurrentTransactionException();
     }
+    
+    if(amount > 100000.00) {
+    	throw new SingleTransactionLimitException();
+    }
 
     Double totalSpent = creditTransactionsDAO.getTotalSpendAmount(phoneNumber);
 
-
-    if (totalSpent >= totalLimit) {
+    if(totalSpent  == null) {
+    	totalSpent = 0.0;
+    }
+    if (totalSpent+amount > totalLimit) {
+    	creditLimitDAO.unlock(phoneNumber);
       throw new CreditLimitCrossedException();
     }
 
