@@ -8,6 +8,7 @@ import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 
 public interface CreditTransactionsDAO {
 
+	//hello
   @SqlUpdate(
       "CREATE TABLE IF NOT EXISTS credit_transactions (phone_number character varying(10) NOT NULL,"
           + "transaction_amount numeric(10, 2) NOT NULL,transaction_time time without time zone "
